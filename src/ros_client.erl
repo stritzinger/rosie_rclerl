@@ -37,31 +37,31 @@ start_link(Node, Service, CallbackHandler) ->
                                  user_process = CallbackHandler},
                           []).
 destroy(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:stop(Pid).
 
 wait_for_service(Name, Timeout) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {wait_for_service, Timeout}).
 
 service_is_ready(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, service_is_ready).
 
 call(Name, Request) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {send_request_and_wait, Request}).
 
 cast(Name, Request) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {send_request_async, Request}).
 
 get_all_dds_entities(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, get_all_dds_entities).
 
 on_topic_msg(Name, BinaryMsg) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {on_topic_msg, BinaryMsg}).
 
 %callbacks

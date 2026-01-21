@@ -42,27 +42,27 @@ start_link(Node, Action, {CallbackModule, Pid}) ->
                           []).
 
 destroy(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:stop(Pid).
 
 abort_goal(Name, Msg) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {abort_goal, Msg}).
 
 cancel_goal(Name, Msg) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {cancel_goal, Msg}).
 
 publish_feedback(Name, Msg) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {publish_feedback, Msg}).
 
 publish_result(Name, GoalID, Result) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {publish_result, GoalID, Result}).
 
 on_client_request(Name, Request) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {on_client_request, Request}).
 
 %callbacks

@@ -46,15 +46,15 @@ start_link(MsgModule, Node, TopicName, CallbackHandler) ->
                                  user_process = CallbackHandler},
                           []).
 destroy(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:stop(Pid).
 
 get_all_dds_entities(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, get_all_dds_entities).
 
 on_data_available(Name, {Reader, ChangeKey}) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {on_data_available, {Reader, ChangeKey}}).
 
 %callbacks

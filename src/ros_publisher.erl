@@ -48,19 +48,19 @@ start_link(MsgModule, Node, TopicName) ->
                                                 type_name = MsgModule:get_type()}},
                           []).
 destroy(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:stop(Pid).
 
 get_all_dds_entities(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, get_all_dds_entities).
 
 publish(Name, Msg) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {publish, Msg}).
 
 get_subscription_count(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, get_subscription_count).
 
 %callbacks
