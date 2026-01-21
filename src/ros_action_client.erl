@@ -39,31 +39,31 @@ start_link(Node, Action, {CallbackModule, Pid}) ->
                           []).
 
 destroy(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:stop(Pid).
 
 wait_for_server(Name, Timeout) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {wait_for_server, Timeout}).
 
 send_goal(Name, GoalRequest) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {send_goal, GoalRequest}).
 
 get_result(Name, ResultRequest) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {get_result, ResultRequest}).
 
 cancel_goal(Name, CancelGoalRequest) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {cancel_goal, CancelGoalRequest}).
 
 on_service_reply(Name, Msg) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {on_service_reply, Msg}).
 
 on_topic_msg(Name, Msg) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {on_topic_msg, Msg}).
 
 %callbacks

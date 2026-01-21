@@ -13,7 +13,7 @@ start_link() ->
     gen_server:start_link(?MODULE, [], []).
 
 on_data_available(Name, {ReaderPid, ChangeKey}) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {on_data_available, {ReaderPid, ChangeKey}}).
 
 init(S) ->

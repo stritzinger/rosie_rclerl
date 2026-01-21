@@ -52,20 +52,20 @@ start_link(Node, Service, {Module, Pid}) ->
                                  user_process = {Module, Pid}},
                           []).
 destroy(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:stop(Pid).
 
 %This second start-link is for internal use by the action modules
 send_response(Name, Response) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {send_response, Response}).
 
 get_all_dds_entities(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, get_all_dds_entities).
 
 on_topic_msg(Name, BinaryMsg) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {on_topic_msg, BinaryMsg}).
 
 %callbacks

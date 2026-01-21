@@ -80,26 +80,26 @@ start_link(Name, OptionRecord) ->
     gen_server:start_link(?MODULE, {Name, OptionRecord}, []).
 
 destroy(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:stop(Pid).
 
 get_name(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, get_name).
 
 declare_parameter(Name, ParamName) ->
     declare_parameter(Name, ParamName, none).
 
 declare_parameter(Name, ParamName, ParamValue) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {declare_parameter, ParamName, ParamValue}).
 
 undeclare_parameter(Name, ParamName) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {undeclare_parameter, ParamName}).
 
 has_parameter(Name, ParamName) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {has_parameter, ParamName}).
 
 get_parameter(Name, ParamName) ->
@@ -109,7 +109,7 @@ get_parameter(Name, ParamName) ->
     end.
 
 get_parameters(Name, ParamNameList) ->
-    [Pid|_] = pg:get_members(Name),
+    [Pid|_] = pg:get_local_members(Name),
     gen_server:call(Pid, {get_parameters, ParamNameList}).
 
 set_parameter(Name, Param) ->
@@ -119,7 +119,7 @@ set_parameter(Name, Param) ->
     end.
 
 set_parameters(Name, ParamList) ->
-    [Pid|_] = pg:get_members(Name),
+    [Pid|_] = pg:get_local_members(Name),
     gen_server:call(Pid, {set_parameters, ParamList}).
 
 describe_parameter(Name, ParamName) ->
@@ -127,72 +127,72 @@ describe_parameter(Name, ParamName) ->
     D.
 
 describe_parameters(Name, ParamNames) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {describe_parameters, ParamNames}).
 
 set_descriptor(Name,  ParamName, NewDescriptor) ->
     set_descriptor(Name,  ParamName, NewDescriptor, none).
 
 set_descriptor(Name,  ParamName, NewDescriptor, AlternativeValue) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {set_descriptor,  ParamName, NewDescriptor, AlternativeValue}).
 
 create_subscription(Name, raw, Topic, Callback) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {create_subscription, raw, Topic, Callback});
 create_subscription(Name, MsgModule, TopicName, Callback) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {create_subscription, MsgModule, TopicName, Callback}).
 
 create_publisher(Name, raw, Topic) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {create_publisher, raw, Topic});
 create_publisher(Name, MsgModule, TopicName) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {create_publisher, MsgModule, TopicName}).
 
 create_publisher(Name, MsgModule, TopicName, QoS) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {create_publisher, MsgModule, TopicName, QoS}).
 
 create_client(Name, Service, CallbackHandler) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {create_client, Service, CallbackHandler}).
 
 create_service(Name, Service, Callback) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {create_service, Service, Callback}).
 
 create_service(Name, Service, QoSProfile, Callback) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {create_service, Service, QoSProfile, Callback}).
 
 destroy_subscription(Name, Subscription) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {destroy_subscription, Subscription}).
 
 destroy_publisher(Name, Publisher) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {destroy_publisher, Publisher}).
 
 destroy_client(Name, Client) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {destroy_client, Client}).
 
 destroy_service(Name, Service) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {destroy_service, Service}).
 
 on_topic_msg(Name, Msg) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:cast(Pid, {on_topic_msg, Msg}).
 
 on_client_request(Name, Msg) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, {on_client_request, Msg}).
 
 get_all_dds_entities(Name) ->
-    [Pid | _] = pg:get_members(Name),
+    [Pid | _] = pg:get_local_members(Name),
     gen_server:call(Pid, get_all_dds_entities).
 
 
@@ -344,7 +344,7 @@ handle_cast({on_topic_msg, Msg}, S) ->
     {noreply, S}.
 
 % HELPERS
-% 
+%
 
 h_declare_parameter(ParamName, ParamValue, #state{parameters = Map} = S) ->
     NameIsLegal = ros_node_utils:is_name_legal(ParamName),
@@ -358,9 +358,9 @@ h_declare_parameter(ParamName, ParamValue, #state{parameters = Map} = S) ->
         {true,_,_} -> {{error, parameter_already_declared}, S};
         {_,false,_} -> {{error, invalid_name}, S};
         {_,_,invalid} -> {{error, invalid_type}, S};
-        {false, true, ?PARAMETER_NOT_SET} -> {#ros_parameter{name = ParamName, value=none, type=Type}, 
+        {false, true, ?PARAMETER_NOT_SET} -> {#ros_parameter{name = ParamName, value=none, type=Type},
                 S#state{parameters = Map#{ParamName => NewParam}}};
-        _ -> {#ros_parameter{name = ParamName, value=ParamValue, type=Type}, 
+        _ -> {#ros_parameter{name = ParamName, value=ParamValue, type=Type},
                 S#state{parameters = Map#{ParamName => NewParam}}}
     end.
 
@@ -378,18 +378,18 @@ h_undeclare_parameter(ParamName, #state{parameters = Map} = S) ->
     end.
 
 
-h_get_parameters(ParamNameList, #state{options = 
-    #ros_node_options{allow_undeclared_parameters=ALLOW_UNDECLARED}, 
-                    parameters=P}) -> 
+h_get_parameters(ParamNameList, #state{options =
+    #ros_node_options{allow_undeclared_parameters=ALLOW_UNDECLARED},
+                    parameters=P}) ->
     Parameters = ros_node_utils:get_parameters_from_map(ParamNameList,P),
-    case not ALLOW_UNDECLARED and lists:any(fun ros_node_utils:param_type_is_unset/1, Parameters) of 
+    case not ALLOW_UNDECLARED and lists:any(fun ros_node_utils:param_type_is_unset/1, Parameters) of
         true -> {error, parameter_not_declared};
         false -> lists:map(fun ros_node_utils:simplified_parameter_view/1, Parameters)
     end.
 
-set_parameter_in_map( #ros_parameter{name = N , value = V, type = T}, 
+set_parameter_in_map( #ros_parameter{name = N , value = V, type = T},
         #state{ options = #ros_node_options{allow_undeclared_parameters = ALLOW_UNDECLARED},
-                parameters = Pmap}= S) -> 
+                parameters = Pmap}= S) ->
     ParamIsDeclared = lists:member(N, maps:keys(Pmap)),
     ParamIsCoherent = ros_node_utils:find_param_type(V) == T,
     [{#rcl_interfaces_parameter_descriptor{type =OldParamType},_}] = ros_node_utils:get_parameters_from_map([N], Pmap),
@@ -398,11 +398,11 @@ set_parameter_in_map( #ros_parameter{name = N , value = V, type = T},
         {true, _, ?PARAMETER_NOT_SET, OLD_T} when OLD_T/= ?PARAMETER_NOT_SET -> maps:remove(N, Pmap);
         {_, false,_,_} -> parameter_value;
         {true,true,_,_} -> {Desc,_} = maps:get(N,Pmap),
-                maps:put(N, {Desc#rcl_interfaces_parameter_descriptor{type = T}, 
+                maps:put(N, {Desc#rcl_interfaces_parameter_descriptor{type = T},
                             ros_node_utils:build_parameter_value(V, T)},
                             Pmap);
         {false,true,_,_} -> case ALLOW_UNDECLARED of
-                    true -> {_, NewS} = h_declare_parameter(N, V, S), 
+                    true -> {_, NewS} = h_declare_parameter(N, V, S),
                             NewS#state.parameters;
                     false -> undeclared
                 end
@@ -415,19 +415,19 @@ h_set_parameters([], Results, S) ->
     {Results, S};
 h_set_parameters([Param|TL], Results, S) ->
     case set_parameter_in_map(Param, S) of
-        undeclared ->  
+        undeclared ->
             {{error, parameter_not_declared}, S};
-        NewP when is_map(NewP) -> 
+        NewP when is_map(NewP) ->
             h_set_parameters(TL, [ success | Results], S#state{parameters = NewP});
-        SoftFailure ->  
+        SoftFailure ->
             h_set_parameters(TL, [ {failure, SoftFailure} | Results], S)
     end.
 
 h_describe_parameters(ParamNameList, #state{
-                options = #ros_node_options{allow_undeclared_parameters=ALLOW_UNDECLARED}, 
+                options = #ros_node_options{allow_undeclared_parameters=ALLOW_UNDECLARED},
                 parameters=P}) ->
     Parameters = ros_node_utils:get_parameters_from_map(ParamNameList,P),
-    case not ALLOW_UNDECLARED and lists:any(fun ros_node_utils:param_type_is_unset/1, Parameters) of 
+    case not ALLOW_UNDECLARED and lists:any(fun ros_node_utils:param_type_is_unset/1, Parameters) of
         true -> {error, parameter_not_declared};
         false -> [ D || {D,_V} <- Parameters]
     end.
@@ -435,7 +435,7 @@ h_describe_parameters(ParamNameList, #state{
 update_existing_param_desc(N, NewDescriptor, #state{parameters=P} = S) ->
     {_,V} = maps:get(N,P),
     { ros_node_utils:extract_parameter_value(V), S#state{parameters = maps:put(N,{NewDescriptor#rcl_interfaces_parameter_descriptor{name = N}, V},P)}}.
-    
+
 update_existing_param_desc_and_val(N, NewDescriptor, AltVal, #state{parameters=P} = S) ->
     V = ros_node_utils:build_parameter_value(AltVal, NewDescriptor#rcl_interfaces_parameter_descriptor.type),
     { AltVal, S#state{parameters = maps:put(N,{NewDescriptor#rcl_interfaces_parameter_descriptor{name = N}, V},P)}}.
@@ -450,13 +450,13 @@ implicit_declare_param_with_desc_and_val(N, NewDescriptor, AltVal, #state{parame
 
 
 h_set_descriptor( ParamName, NewDescriptor, AltVal, #state{
-                options = #ros_node_options{allow_undeclared_parameters=ALLOW_UNDECLARED}, 
+                options = #ros_node_options{allow_undeclared_parameters=ALLOW_UNDECLARED},
                 parameters=Pmap} = S) ->
     ParamDeclared = lists:member(ParamName, maps:keys(Pmap)),
     {IsOldParamReadOnly, OldValCompatibleWithNewDesc }= case ParamDeclared of
-        true -> 
+        true ->
                 [{OldD,OldV}|_] = ros_node_utils:get_parameters_from_map([ParamName],Pmap),
-                {OldD#rcl_interfaces_parameter_descriptor.read_only, 
+                {OldD#rcl_interfaces_parameter_descriptor.read_only,
                 OldV#rcl_interfaces_parameter_value.type == NewDescriptor#rcl_interfaces_parameter_descriptor.type};
         false -> false
     end,
